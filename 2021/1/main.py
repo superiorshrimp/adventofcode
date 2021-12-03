@@ -9,7 +9,7 @@ def ex2(lines):
     counter = 0
     for i in range(len(lines)-3):
         if lines[i+3] > lines[i]:
-            counter +=1
+            counter+=1
     return counter
 
 with open('./1/data.txt', "r") as f:
