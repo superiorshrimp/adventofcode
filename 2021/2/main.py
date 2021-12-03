@@ -20,7 +20,6 @@ def ex2(lines):
         else:
             aim -= int(lines[i][1])
     return depth*horizontal
-
     
 with open('./2/data.txt', 'r') as f:
     lines = [row.split() for row in f]

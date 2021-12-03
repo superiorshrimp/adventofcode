@@ -17,19 +17,19 @@ ex1gamma :: [String] -> Int -> Int
 ex1gamma xs len = toDecimal (createGamma xs len len)
 
 count1s :: [String] -> Int -> Int
-count1s xs i = if (length . filter (== '1') $ [xs!!j!!i | j <- [0..length xs-1]]) >= (div (length xs) 2 + mod (length xs) 2)
+count1s xs i = if sum [digitToInt (xs!!j!!i) | j <- [0..length xs-1]] >= (div (length xs) 2 + mod (length xs) 2)
     then 1
     else 0
 
 oxGenRating :: [String] -> Int -> Int
 oxGenRating xs i
     | length xs == 1 = toDecimal [digitToInt (head xs!!j) :: Int | j <- [0..(length . head) xs - 1]]
-    | otherwise = oxGenRating (filter (\x -> digitToInt (x!!i) == count1s xs i) xs) (i+1)
+    | otherwise = let condition = count1s xs i in oxGenRating (filter (\x -> digitToInt (x!!i) == condition) xs) (i+1)
 
 co2scrRating :: [String] -> Int -> Int
 co2scrRating xs i
     | length xs == 1 = toDecimal [digitToInt (head xs!!j) :: Int | j <- [0..(length . head) xs - 1]]
-    | otherwise = co2scrRating (filter (\x -> digitToInt (x!!i) /= count1s xs i) xs) (i+1)
+    | otherwise = let condition = abs (count1s xs i - 1) in co2scrRating (filter (\x -> digitToInt (x!!i) == condition) xs) (i+1)
 
 ex1 :: [String] -> Int
 ex1 xs = ex1gamma xs len * oppositePositive (ex1gamma xs len) len
