@@ -58,7 +58,6 @@ def ex2(seq, lines):
                         return num * sum_missing(seq[:i+1], lines[5*(coord[0]//5):5*(coord[0]//5) +5])
         i+=1    
     
-
 with open('./4/data.txt', 'r') as f:
     temp = [row.split() for row in f]
 
