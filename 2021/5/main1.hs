@@ -1,3 +1,10 @@
+
+flipRight :: [[Int]] -> [[Int]]
+flipRight = transpose . reverse
+
+flipLeft :: [[Int]] -> [[Int]]
+flipLeft = reverse . transpose
+
 transpose :: [[Int]] -> [[Int]]
 transpose ([]:_) = []
 transpose x      = map head x : transpose (map tail x)
@@ -9,28 +16,25 @@ findMaxY :: [[Int]] -> Int
 findMaxY = foldr (\ line -> max (max (line!!1) (line!!3))) 0
 
 drawHor :: [Int] -> [[Int]] -> [[Int]]
-drawHor [x1, y1, x2, y2] hmap = take (y1-1) hmap ++ [[if x>=min x1 x2 && x<=max x1 x2 then (if (hmap!!y1!!x)==0 then 1 else 2) else hmap!!y1!!x | x <- [0..(length . head $ hmap) -1]]] ++ drop y1 hmap
+drawHor [x1, y1, x2, y2] hmap = take y1 hmap ++ [[if x>=min x1 x2 && x<=max x1 x2 then (if (hmap!!y1!!x)==0 then 1 else 2) else hmap!!y1!!x | x <- [0..(length . head $ hmap) -1]]] ++ drop (y1+1) hmap
 
 drawVer :: [Int] -> [[Int]] -> [[Int]]
-drawVer [x1, y1, x2, y2] hmap = take (x1-1) hmap ++ [[if (y>=min y1 y2) && (y<=max y1 y2) then (if (hmap!!y!!(x1-1))==0 then 1 else 2) else hmap!!y!!(x1-1) | y <- [0..(length . head $ hmap) -1]]] ++ drop x1 hmap
+drawVer [x1, y1, x2, y2] hmap = take (length hmap - x1) hmap ++ [[if (y>=min y1 y2) && (y<=max y1 y2) then (if (hmap!!(length hmap - x1)!!y)==0 then 1 else 2) else hmap!!(length hmap - x1)!!y | y <- [0..(length . head $ hmap) -1]]] ++ drop (length hmap - x1 + 1) hmap
 
 draw :: [Int] -> [[Int]] -> [[Int]]
 draw [x1, y1, x2, y2] hmap
-    | x1 == x2  = transpose . reverse . drawVer [x1, y1, x2, y2] . reverse . transpose $ hmap 
+    | x1 == x2  = flipRight . drawVer [x1, y1, x2, y2] . flipLeft $ hmap
     | y1 == y2  = drawHor [x1, y1, x2, y2] hmap
     | otherwise = hmap
-
---cos z tymi rotacjiami nie dziala
-
 
 count2s :: [[Int]] -> Int
 count2s = foldr ((+) . (length . filter (== 2))) 0
 
-engine :: [[Int]] -> [[Int]] -> [[Int]]
-engine []         hmap = hmap
+engine :: [[Int]] -> [[Int]] -> Int
+engine []         hmap = count2s hmap
 engine (line:arr) hmap = engine arr (draw line hmap)
 
-ex1 :: [[Int]] -> [[Int]]
+ex1 :: [[Int]] -> Int
 ex1 arr = engine arr [[0 | col <- [0..len]]| row <- [0..len]]
     where len = max (findMaxX arr) (findMaxY arr)
 
