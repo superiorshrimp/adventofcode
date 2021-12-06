@@ -62,5 +62,5 @@ with open("./6/data.txt", "r") as f:
     input = [row.split(",") for row in f]
     input = [int(el) for el in input[0]]
 
-#print(ex1(input))
+print(ex1(input))
 print(ex2(input))
