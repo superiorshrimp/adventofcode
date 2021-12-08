@@ -44,7 +44,6 @@ def ex2(locations):
     for crab_median in range(minimum, maksimum + 1):
         fuel = min(fuel, req_fuel(crabs, crab_median))
     return fuel
-    
  
 with open("./7/data.txt", "r") as f:
     input = [row.split(",") for row in f]
