@@ -31,11 +31,6 @@ class Stack:
             self.count=1
             self.top=new
 
-def make_stack(T):
-    stack=Stack()
-    for el in T:
-        stack.put(el)
-
 def minimum(tab, row, col):
     if tab[row][col] == 9:
         return 0
